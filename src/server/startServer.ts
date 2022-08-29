@@ -7,6 +7,8 @@ import cors from "cors";
 const debug = Debug("sneakers-reviews:index");
 
 export const app = express();
+app.disable("x-powered-by");
+
 app.use(cors());
 
 export const startServer = (port: number) =>
