@@ -1,6 +1,6 @@
 # ENDPOINTS:
 
-[POST] /users/sign-up -> Realiza el registro del usuario si los datos son correctos.
+[POST] /users/signUp -> Realiza el registro del usuario si los datos son correctos.
 
 [POST] /users/login -> Devuelve un token si el user es correcto.
 

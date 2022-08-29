@@ -7,6 +7,7 @@ import cors from "cors";
 import connectDB from "./database";
 import { app, startServer } from "./server/startServer";
 import { generalError, notFoundError } from "./middlewares/errors";
+import usersRouter from "./server/routers/usersRouter";
 
 app.use(express.json());
 app.use(morgan("dev"));
@@ -29,6 +30,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   debug(chalk.green(`A request has arrived to ${req.url}`));
   next();
 });
+
+app.use("/users", usersRouter);
 
 app.use(notFoundError);
 app.use(generalError);
