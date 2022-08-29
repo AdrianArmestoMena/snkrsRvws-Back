@@ -6,6 +6,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import connectDB from "./database";
 import { app, startServer } from "./server/startServer";
+import { generalError, notFoundError } from "./middlewares/errors";
 
 app.use(express.json());
 app.use(morgan("dev"));
@@ -20,8 +21,8 @@ if (process.env.NODE_ENV === "test") {
 const port = process.env.PORT ?? 4000;
 
 (async () => {
-  await connectDB(mongoUrl);
   await startServer(port as number);
+  await connectDB(mongoUrl);
 })();
 
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -29,4 +30,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
+app.use(notFoundError);
+app.use(generalError);
 export default app;
