@@ -4,7 +4,7 @@ import chalk from "chalk";
 import express from "express";
 import cors from "cors";
 
-const debug = Debug("sneakersReview:index");
+const debug = Debug("sneakers-reviews:index");
 
 export const app = express();
 app.use(cors());
