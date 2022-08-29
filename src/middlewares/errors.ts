@@ -1,7 +1,9 @@
 import chalk from "chalk";
-import { debug } from "console";
+import Debug from "debug";
 import { NextFunction, Request, Response } from "express";
 import Customerror from "../types/error";
+
+const debug = Debug("sneakers-reviews:errors");
 
 export const notFoundError = (
   req: Request,
@@ -19,7 +21,7 @@ export const generalError = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction
 ) => {
-  const errorStatus = error.statusCode ?? 500;
+  const errorStatus = error.statusCode;
   const publicErrorMessage = error.publicMessage ?? "General fucked up";
   const privateErrorMessage = error.privateMessage;
 

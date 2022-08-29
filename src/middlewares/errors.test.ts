@@ -47,7 +47,6 @@ describe("Given a general error midelware", () => {
 
       expect(res.status).toHaveBeenCalledWith(error.statusCode);
     });
-
     test("Then it should call the json method with the error message", async () => {
       const error = {
         name: "error",
