@@ -1,63 +1,55 @@
 {
-	"info": {
-		"_postman_id": "91473e99-ce2f-44bd-be15-18306a910c11",
-		"name": "snkrRvws",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "22263321"
-	},
-	"item": [
-		{
-			"name": "sign up",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"userName\": \"string\",\n  \"password\": \"string\",\n  \"email\": \"string\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{snkrRvws}}users/signUp",
-					"host": [
-						"{{snkrRvws}}users"
-					],
-					"path": [
-						"signUp"
-					]
-				}
-			},
-			"response": []
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "snkrRvws",
-			"value": "http://localhost:4000/",
-			"type": "string"
-		}
-	]
+  "info": {
+    "_postman_id": "91473e99-ce2f-44bd-be15-18306a910c11",
+    "name": "snkrRvws",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "22263321"
+  },
+  "item": [
+    {
+      "name": "sign up",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userName\": \"string\",\n  \"password\": \"string\",\n  \"email\": \"string\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{snkrRvws}}users/signUp",
+          "host": ["{{snkrRvws}}users"],
+          "path": ["signUp"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "snkrRvws",
+      "value": "http://localhost:4000/",
+      "type": "string"
+    }
+  ]
 }
