@@ -1,0 +1,60 @@
+import { NextFunction, Request, Response } from "express";
+import { User } from "../database/models/users";
+import signUp from "./usersControllers";
+
+const mockVerifyResolution = {};
+const hashCompareReturn: boolean | Error = true;
+
+const next = jest.fn() as Partial<NextFunction>;
+
+jest.mock("../utils/auth", () => ({
+  ...jest.requireActual("../utils/auth"),
+  hashCreator: () => jest.fn().mockReturnValue(""),
+  verifyToken: () => jest.fn().mockReturnValue(mockVerifyResolution),
+  createToken: jest.fn().mockReturnValue(""),
+  hashCompare: () => jest.fn().mockReturnValue(hashCompareReturn),
+}));
+
+describe("Given a sign up controller", () => {
+  const mockedReqBody = {
+    userName: "",
+    password: "",
+    picture: "string",
+    email: "string",
+  };
+
+  const req = {
+    body: mockedReqBody,
+  } as Partial<Request>;
+
+  const res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn(),
+  } as Partial<Response>;
+
+  User.create = jest.fn().mockReturnValue(mockedReqBody);
+
+  describe("When it is called with a Request a Response and a Next fucntion", () => {
+    test("Then it should call the status method of the response", async () => {
+      await signUp(req as Request, res as Response, next as NextFunction);
+
+      const statusCode = 201;
+
+      expect(res.status).toHaveBeenCalledWith(statusCode);
+    });
+
+    test("Then it should call the json method of the response", async () => {
+      await signUp(req as Request, res as Response, next as NextFunction);
+
+      expect(res.json).toHaveBeenCalledWith(mockedReqBody);
+    });
+
+    test("It should call the next function with the created error if it wasn't posible to create the user", async () => {
+      User.create = jest.fn().mockRejectedValue(new Error());
+
+      await signUp(req as Request, res as Response, next as NextFunction);
+
+      expect(next).toHaveBeenCalled();
+    });
+  });
+});
