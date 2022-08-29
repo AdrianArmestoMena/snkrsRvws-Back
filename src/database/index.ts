@@ -8,6 +8,7 @@ import cors from "cors";
 const debug = Debug("sneakers-reviews:index");
 
 export const app = express();
+app.disable("x-powered-by");
 app.use(cors());
 
 const connectDB = (mongoUrl: string) =>

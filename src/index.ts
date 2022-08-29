@@ -7,8 +7,6 @@ import cors from "cors";
 import { app, startServer } from "./server/startServer";
 import connectDB from "./database";
 
-app.disable("x-powered-by");
-
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
