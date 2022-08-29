@@ -19,6 +19,8 @@ describe("Given a sign up controller", () => {
   const mockedReqBody = {
     name: "",
     password: "",
+    picture: "string",
+    email: "string",
   };
 
   const req = {

@@ -26,12 +26,4 @@ export const userSchema = new Schema({
   },
 });
 
-userSchema.set("toJSON", {
-  transform: (doc, ret) => {
-    const newDocument = { ...ret };
-    delete newDocument.password;
-    return newDocument;
-  },
-});
-
 export const User = model("User", userSchema, "users");
