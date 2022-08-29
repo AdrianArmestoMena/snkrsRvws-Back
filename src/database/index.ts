@@ -2,12 +2,11 @@ import "../loadEnvironment";
 import Debug from "debug";
 import chalk from "chalk";
 import mongoose from "mongoose";
-import express from "express";
 import cors from "cors";
+import { app } from "../server/startServer";
 
 const debug = Debug("sneakers-reviews:index");
 
-export const app = express();
 app.disable("x-powered-by");
 app.use(cors());
 

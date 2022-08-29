@@ -4,8 +4,8 @@ import chalk from "chalk";
 import morgan from "morgan";
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
-import { app, startServer } from "./server/startServer";
 import connectDB from "./database";
+import { app, startServer } from "./server/startServer";
 
 app.use(express.json());
 app.use(morgan("dev"));
