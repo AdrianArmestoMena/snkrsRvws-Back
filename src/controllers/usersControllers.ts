@@ -7,6 +7,8 @@ import createCustomError from "../utils/error";
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
   const user: ReqUser = req.body;
   user.password = await hashCreator(user.password);
+  user.userName = await user.userName.toString();
+  user.email = await user.email.toString();
   try {
     const newUser = await User.create(user);
     res.status(201).json(newUser);

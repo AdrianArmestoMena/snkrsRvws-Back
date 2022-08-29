@@ -17,7 +17,7 @@ jest.mock("../utils/auth", () => ({
 
 describe("Given a sign up controller", () => {
   const mockedReqBody = {
-    name: "",
+    userName: "",
     password: "",
     picture: "string",
     email: "string",
