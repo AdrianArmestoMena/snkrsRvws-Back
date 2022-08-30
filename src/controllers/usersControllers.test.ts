@@ -6,10 +6,9 @@ const next = jest.fn() as Partial<NextFunction>;
 
 describe("Given a sign up controller", () => {
   const mockedReqBody = {
-    userName: "",
+    userName: "assddsdsdsdsd",
     password: "asdghf",
-    picture: "string",
-    email: "string",
+    email: "stringas",
   };
 
   const req = {
