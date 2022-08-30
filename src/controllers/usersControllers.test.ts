@@ -2,18 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { User } from "../database/models/users";
 import signUp from "./usersControllers";
 
-const mockVerifyResolution = {};
-const hashCompareReturn: boolean | Error = true;
-
 const next = jest.fn() as Partial<NextFunction>;
-
-jest.mock("../utils/auth", () => ({
-  ...jest.requireActual("../utils/auth"),
-  hashCreator: () => jest.fn().mockReturnValue(""),
-  verifyToken: () => jest.fn().mockReturnValue(mockVerifyResolution),
-  createToken: jest.fn().mockReturnValue(""),
-  hashCompare: () => jest.fn().mockReturnValue(hashCompareReturn),
-}));
 
 describe("Given a sign up controller", () => {
   const mockedReqBody = {
