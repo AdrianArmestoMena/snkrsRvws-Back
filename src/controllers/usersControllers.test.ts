@@ -44,5 +44,21 @@ describe("Given a sign up controller", () => {
 
       expect(next).toHaveBeenCalled();
     });
+
+    test("It should call the next function with the created error if the data does not fulfill contract", async () => {
+      const errorReqBody = {
+        userName: "a",
+        password: "a",
+        email: "a",
+      };
+
+      const errorReq = {
+        body: errorReqBody,
+      } as Partial<Request>;
+
+      await signUp(errorReq as Request, res as Response, next as NextFunction);
+
+      expect(next).toHaveBeenCalled();
+    });
   });
 });
