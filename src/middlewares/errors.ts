@@ -5,13 +5,9 @@ import Customerror from "../types/error";
 
 const debug = Debug("sneakers-reviews:errors");
 
-export const notFoundError = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  res.status(404).json({ error: "Endpoint Not Found" });
-  next();
+export const notFoundError = (req: Request, res: Response) => {
+  const error = { error: "Endpoint Not Found" };
+  res.status(404).json(error);
 };
 
 export const generalError = (

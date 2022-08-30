@@ -6,12 +6,16 @@ import createCustomError from "../utils/error";
 
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
   const user: ReqUser = req.body;
+
   user.password = await hashCreator(user.password);
-  user.userName = await user.userName.toString();
-  user.email = await user.email.toString();
+  user.userName = user.userName.toString();
+  user.email = user.email.toString();
+
   try {
+    const statusCode = 201;
     const newUser = await User.create(user);
-    res.status(201).json(newUser);
+
+    res.status(statusCode).json(newUser);
   } catch (error) {
     const errorCustom = createCustomError(
       400,

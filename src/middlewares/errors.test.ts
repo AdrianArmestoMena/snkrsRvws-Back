@@ -4,14 +4,13 @@ import { notFoundError, generalError } from "./errors";
 describe("Given a notFoundError midelware", () => {
   describe("When it is calles wit and next function, a responose and a request", () => {
     const req = {} as Partial<Request>;
-    const next = jest.fn();
     const res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     } as Partial<Response>;
     test("The it should call the status method with 404 as status code", async () => {
       const statusCode = 404;
-      await notFoundError(req as Request, res as Response, next);
+      await notFoundError(req as Request, res as Response);
 
       expect(res.status).toHaveBeenCalledWith(statusCode);
     });
@@ -19,7 +18,7 @@ describe("Given a notFoundError midelware", () => {
     test("The it should call the json method with an error", async () => {
       const error = { error: "Endpoint Not Found" };
 
-      await notFoundError(req as Request, res as Response, next);
+      await notFoundError(req as Request, res as Response);
 
       expect(res.json).toHaveBeenCalledWith(error);
     });
