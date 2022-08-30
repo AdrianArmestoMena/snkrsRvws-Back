@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { User } from "../database/models/users";
+import signUpSchema from "../schemas/signUpSchema";
 import { ReqUser } from "../types/user";
 import { hashCreator } from "../utils/auth";
 import createCustomError from "../utils/error";
@@ -7,13 +8,23 @@ import createCustomError from "../utils/error";
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
   const user: ReqUser = req.body;
 
-  user.password = await hashCreator(user.password);
-  user.userName = user.userName.toString();
-  user.email = user.email.toString();
-
   try {
+    const validation = signUpSchema.validate(user, {
+      abortEarly: false,
+    });
+
+    if (validation.error) {
+      throw new Error(Object.values(validation.error.message).join(""));
+    }
+
+    (validation.value as ReqUser).password = await hashCreator(user.password);
+
+    const newUser = await User.create({
+      userName: (validation.value as ReqUser).userName,
+      email: (validation.value as ReqUser).email,
+      password: (validation.value as ReqUser).password,
+    });
     const statusCode = 201;
-    const newUser = await User.create(user);
 
     res.status(statusCode).json(newUser);
   } catch (error) {
