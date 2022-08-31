@@ -53,7 +53,7 @@ export const logIn = async (
   const errorCustom = createCustomError(
     400,
     "Authentication error",
-    "Authentication error"
+    "Data does not fulfill contract"
   );
 
   let findUser: Array<UserWithId>;
@@ -71,6 +71,9 @@ export const logIn = async (
     return;
   }
 
+  user.userName.toString();
+  user.password.toString();
+
   try {
     findUser = await User.find({
       userName: user.userName,
@@ -84,8 +87,8 @@ export const logIn = async (
   } catch (error) {
     const customError = createCustomError(
       400,
-      (error as Error).message,
-      "Authentication error"
+      "Authentication error",
+      "Could not fund user"
     );
     next(customError);
     return;
@@ -103,8 +106,8 @@ export const logIn = async (
   } catch (error) {
     const customError = createCustomError(
       400,
-      (error as Error).message,
-      "Authentification error"
+      "Authentification error",
+      "Not same password"
     );
 
     next(customError);

@@ -2,15 +2,16 @@ import { NextFunction, Request, Response } from "express";
 import { User } from "../database/models/users";
 import { Payload } from "../types/payload";
 import { createToken } from "../utils/auth";
+import createCustomError from "../utils/error";
 import { logIn, signUp } from "./usersControllers";
 
 const next = jest.fn() as Partial<NextFunction>;
 
-const hashCompareValue = false;
+let hashCompareValue: boolean = true;
 
 jest.mock("../utils/auth", () => ({
   ...jest.requireActual("../utils/auth"),
-  hashCompare: () => jest.fn().mockReturnValue(hashCompareValue),
+  hashCompare: () => hashCompareValue,
   createToken: jest.fn().mockReturnValue(""),
 }));
 
@@ -32,6 +33,12 @@ describe("Given a sign up controller", () => {
 
   User.create = jest.fn().mockReturnValue(mockedReqBody);
 
+  const errorCustom = createCustomError(
+    400,
+    "Failed on registration",
+    "Failed on registration"
+  );
+
   describe("When it is called with a Request a Response and a Next fucntion", () => {
     test("Then it should call the status method of the response", async () => {
       await signUp(req as Request, res as Response, next as NextFunction);
@@ -52,7 +59,7 @@ describe("Given a sign up controller", () => {
 
       await signUp(req as Request, res as Response, next as NextFunction);
 
-      expect(next).toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(errorCustom);
     });
 
     test("It should call the next function with the created error if the data does not fulfill contract", async () => {
@@ -68,13 +75,13 @@ describe("Given a sign up controller", () => {
 
       await signUp(errorReq as Request, res as Response, next as NextFunction);
 
-      expect(next).toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(errorCustom);
     });
   });
 });
 
 describe("Given a log in controller", () => {
-  afterEach(() => jest.restoreAllMocks());
+  beforeEach(() => jest.clearAllMocks());
 
   const mockedReqBody = {
     userName: "Adrian",
@@ -93,7 +100,21 @@ describe("Given a log in controller", () => {
   User.find = jest.fn().mockReturnValue([mockedReqBody]);
 
   describe("When it is called with a Request a Response and a Next fucntion", () => {
+    test("It should call the next function with the created error if the hashcompare password resolved as false", async () => {
+      hashCompareValue = false;
+      const customError = createCustomError(
+        400,
+        "Authentification error",
+        "Not same password"
+      );
+
+      await logIn(req as Request, res as Response, next as NextFunction);
+
+      expect(next).toHaveBeenCalledWith(customError);
+    });
+
     test("Then it should call the status method of the response", async () => {
+      hashCompareValue = true;
       await logIn(req as Request, res as Response, next as NextFunction);
 
       const statusCode = 200;
@@ -102,11 +123,12 @@ describe("Given a log in controller", () => {
     });
 
     test("Then it should call the json method of the response", async () => {
+      hashCompareValue = true;
       await logIn(req as Request, res as Response, next as NextFunction);
 
       const payLoad: Payload = {
         id: "123",
-        userName: "asdfghj",
+        userName: "Adriann",
       };
 
       const responseData = {
@@ -120,70 +142,52 @@ describe("Given a log in controller", () => {
       mockedReqBody.userName = "a";
       mockedReqBody.password = "a";
 
-      await logIn(req as Request, res as Response, next as NextFunction);
+      hashCompareValue = true;
 
-      expect(next).toHaveBeenCalled();
+      await logIn(req as Request, res as Response, next as NextFunction);
+      const errorCustom = createCustomError(
+        400,
+        "Authentication error",
+        "Data does not fulfill contract"
+      );
+      expect(next).toHaveBeenCalledWith(errorCustom);
     });
 
     test("It should call the next function with the created error if it wasn't posible to find the user", async () => {
       mockedReqBody.userName = "Adrian";
       mockedReqBody.password = "AdrianArm";
+      hashCompareValue = true;
 
       User.find = jest.fn().mockReturnValue([]);
 
       await logIn(req as Request, res as Response, next as NextFunction);
 
-      expect(next).toHaveBeenCalled();
+      const customError = createCustomError(
+        400,
+        "Authentication error",
+        "Could not fund user"
+      );
+
+      expect(next).toHaveBeenCalledWith(customError);
     });
 
     test("It should call the next function with the created error if an user find throw an error", async () => {
       mockedReqBody.userName = "Adrian";
       mockedReqBody.userName = "AdrianArm";
 
+      hashCompareValue = true;
+
       User.find = jest.fn().mockRejectedValue(new Error());
 
       await logIn(req as Request, res as Response, next as NextFunction);
 
-      expect(next).toHaveBeenCalled();
-    });
-  });
-});
+      const customError = createCustomError(
+        400,
+        "Authentication error",
+        "Could not fund user"
+      );
 
-describe("Given a log in controller", () => {
-  afterEach(() => jest.restoreAllMocks());
-
-  jest.mock("../utils/auth", () => ({
-    ...jest.requireActual("../utils/auth"),
-    hashCompare: () => jest.fn().mockReturnValue(false),
-    createToken: jest.fn().mockReturnValue(""),
-  }));
-
-  const mockedReqBody = {
-    userName: "Adrian",
-    password: "AdrianArm",
-  };
-
-  const req = {
-    body: mockedReqBody,
-  } as Partial<Request>;
-
-  const res = {
-    status: jest.fn().mockReturnThis(),
-    json: jest.fn(),
-  } as Partial<Response>;
-
-  User.find = jest.fn().mockReturnValue([mockedReqBody]);
-
-  describe("When it is called with a Request a Response and a Next fucntion", () => {
-    test("It should call the next function with the created error if an user find throw an edfdsfdrror", async () => {
-      mockedReqBody.userName = "Adrian";
-      mockedReqBody.userName = "AdrianArm";
-
-      jest.resetAllMocks();
-
-      await logIn(req as Request, res as Response, next as NextFunction);
-
-      expect(next).toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(customError);
     });
   });
 });
