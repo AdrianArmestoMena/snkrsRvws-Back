@@ -6,3 +6,13 @@ export interface ReqUser {
   contacts?: string[];
   reviews?: string[];
 }
+
+export interface UserWithId {
+  id: string;
+  userName: string;
+  password: string;
+  email: string;
+  picture?: string;
+  contacts?: string[];
+  reviews?: string[];
+}
