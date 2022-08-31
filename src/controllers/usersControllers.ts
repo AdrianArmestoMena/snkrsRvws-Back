@@ -50,6 +50,10 @@ export const logIn = async (
   next: NextFunction
 ) => {
   const user = req.body as { userName: string; password: string };
+
+  user.userName.toString();
+  user.password.toString();
+
   const errorCustom = createCustomError(
     400,
     "Authentication error",
@@ -57,9 +61,9 @@ export const logIn = async (
   );
 
   let findUser: Array<UserWithId>;
-
+  let validation: any;
   try {
-    const validation = logInSchema.validate(user, {
+    validation = logInSchema.validate(user, {
       abortEarly: false,
     });
 
@@ -71,13 +75,10 @@ export const logIn = async (
     return;
   }
 
-  user.userName.toString();
-  user.password.toString();
-
   try {
     findUser = await User.find({
-      userName: user.userName,
-      pasword: user.password,
+      userName: validation.value.userName,
+      pasword: validation.value.password,
     });
 
     if (!findUser.length) {
