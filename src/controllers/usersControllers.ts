@@ -54,8 +54,8 @@ export const logIn = async (
 
   try {
     findUser = await User.find({
-      userName: user.userName,
-      pasword: user.password,
+      userName: user.userName.toString(),
+      pasword: user.password.toString(),
     });
 
     if (!findUser.length) {
