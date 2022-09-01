@@ -2,13 +2,8 @@ import "../loadEnvironment";
 import Debug from "debug";
 import chalk from "chalk";
 import mongoose from "mongoose";
-import cors from "cors";
-import { app } from "../server/startServer";
 
 const debug = Debug("sneakers-reviews:index");
-
-app.disable("x-powered-by");
-app.use(cors());
 
 const connectDB = (mongoUrl: string) =>
   new Promise((resolve, reject) => {

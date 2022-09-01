@@ -22,7 +22,7 @@ export const signUp = async (
     });
     const statusCode = 201;
 
-    res.status(statusCode).json(newUser);
+    res.status(statusCode).json({ newUser });
   } catch (error) {
     const errorCustom = createCustomError(
       400,

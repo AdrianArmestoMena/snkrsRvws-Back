@@ -1,17 +1,11 @@
 import "../loadEnvironment";
 import Debug from "debug";
 import chalk from "chalk";
-import express from "express";
-import cors from "cors";
+import app from ".";
 
 const debug = Debug("sneakers-reviews:index");
 
-export const app = express();
-app.disable("x-powered-by");
-
-app.use(cors());
-
-export const startServer = (port: number) =>
+const startServer = (port: number) =>
   new Promise((resolve, reject) => {
     const server = app.listen(port, () => {
       debug(chalk.blue("Server listening"));
@@ -23,3 +17,5 @@ export const startServer = (port: number) =>
       reject(error);
     });
   });
+
+export default startServer;
