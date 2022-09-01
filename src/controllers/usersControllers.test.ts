@@ -51,7 +51,7 @@ describe("Given a sign up controller", () => {
     test("Then it should call the json method of the response", async () => {
       await signUp(req as Request, res as Response, next as NextFunction);
 
-      expect(res.json).toHaveBeenCalledWith(mockedReqBody);
+      expect(res.json).toHaveBeenCalledWith({ newUser: mockedReqBody });
     });
 
     test("It should call the next function with the created error if it wasn't posible to create the user", async () => {

@@ -1,18 +1,18 @@
 import express from "express";
 import { validate } from "express-validation";
 import { logIn, signUp } from "../../controllers/usersControllers";
-import logInSchema from "../../schemas/logInChema";
+import logInSchema from "../../schemas/logInSchema";
 import signUpSchema from "../../schemas/signUpSchema";
 
 const usersRouter = express.Router();
 
 usersRouter.post(
-  "/signUp",
+  "/signup",
   validate(signUpSchema, {}, { abortEarly: false }),
   signUp
 );
 usersRouter.post(
-  "/log-in",
+  "/login",
   validate(logInSchema, {}, { abortEarly: false }),
   logIn
 );
