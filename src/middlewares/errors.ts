@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import Debug from "debug";
 import { NextFunction, Request, Response } from "express";
+import { ValidationError } from "express-validation";
 import Customerror from "../types/error";
 
 const debug = Debug("sneakers-reviews:errors");
@@ -17,9 +18,20 @@ export const generalError = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction
 ) => {
-  const errorStatus = error.statusCode;
-  const publicErrorMessage = error.publicMessage ?? "General fucked up";
-  const privateErrorMessage = error.privateMessage;
+  let errorStatus = error.statusCode;
+  let publicErrorMessage = error.publicMessage ?? "General fucked up";
+  let privateErrorMessage = error.privateMessage;
+
+  if (error instanceof ValidationError) {
+    errorStatus = 400;
+    publicErrorMessage = "Invalid data";
+    privateErrorMessage = "Invalid data!";
+    debug(chalk.blue("Invalidation request data:"));
+
+    error.details.body.forEach((errorInfo) => {
+      debug(chalk.yellowBright(errorInfo.message));
+    });
+  }
 
   debug(chalk.bgRedBright(privateErrorMessage));
 
