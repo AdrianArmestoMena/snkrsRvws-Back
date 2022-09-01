@@ -138,21 +138,6 @@ describe("Given a log in controller", () => {
       expect(res.json).toHaveBeenCalledWith(responseData);
     });
 
-    test("It should call the next function with the created error if the request body does not fulfill contract", async () => {
-      mockedReqBody.userName = "a";
-      mockedReqBody.password = "a";
-
-      hashCompareValue = true;
-
-      await logIn(req as Request, res as Response, next as NextFunction);
-      const errorCustom = createCustomError(
-        400,
-        "Authentication error",
-        "Data does not fulfill contract"
-      );
-      expect(next).toHaveBeenCalledWith(errorCustom);
-    });
-
     test("It should call the next function with the created error if it wasn't posible to find the user", async () => {
       mockedReqBody.userName = "Adrian";
       mockedReqBody.password = "AdrianArm";

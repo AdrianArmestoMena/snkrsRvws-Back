@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import { errors, ValidationError } from "express-validation";
+import CustomError from "../types/error";
 import { notFoundError, generalError } from "./errors";
 
 describe("Given a notFoundError midelware", () => {
@@ -71,6 +73,41 @@ describe("Given a general error midelware", () => {
       await generalError(error, req as Request, res as Response, next);
 
       expect(res.json).toHaveBeenCalledWith({ error: defaultErrorMessage });
+    });
+  });
+
+  describe("When it receives a valition error", () => {
+    const error = new ValidationError(
+      { body: [{ message: "error" }] } as errors,
+      {}
+    );
+
+    test("Then it should call the response status method with 400 status", () => {
+      const expectedStatus = 400;
+
+      generalError(
+        error as unknown as CustomError,
+        req as Request,
+        res as Response,
+        next
+      );
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
+    });
+
+    test("Then it should call the response json method with the 'Invalid data' message", () => {
+      const expectedError = {
+        error: "Invalid data",
+      };
+
+      generalError(
+        error as unknown as CustomError,
+        req as Request,
+        res as Response,
+        next
+      );
+
+      expect(res.json).toHaveBeenCalledWith(expectedError);
     });
   });
 });
