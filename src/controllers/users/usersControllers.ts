@@ -41,9 +41,6 @@ export const logIn = async (
 ) => {
   const user = req.body as { userName: string; password: string };
 
-  user.userName.toString();
-  user.password.toString();
-
   const errorCustom = createCustomError(
     400,
     "Authentication error",
