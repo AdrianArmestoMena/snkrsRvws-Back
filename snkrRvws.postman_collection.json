@@ -1,55 +1,178 @@
 {
-  "info": {
-    "_postman_id": "91473e99-ce2f-44bd-be15-18306a910c11",
-    "name": "snkrRvws",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "22263321"
-  },
-  "item": [
-    {
-      "name": "sign up",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"userName\": \"string\",\n  \"password\": \"string\",\n  \"email\": \"string\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{snkrRvws}}users/signUp",
-          "host": ["{{snkrRvws}}users"],
-          "path": ["signUp"]
-        }
-      },
-      "response": []
-    }
-  ],
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "exec": [""]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "exec": [""]
-      }
-    }
-  ],
-  "variable": [
-    {
-      "key": "snkrRvws",
-      "value": "http://localhost:4000/",
-      "type": "string"
-    }
-  ]
+	"info": {
+		"_postman_id": "91473e99-ce2f-44bd-be15-18306a910c11",
+		"name": "snkrRvws",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22263321"
+	},
+	"item": [
+		{
+			"name": "sign up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userName\": \"aaaaaaaa\",\n  \"password\": \"aaaaaaa\",\n  \"email\": \"aaaaaaaaaaaaa\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{snkrRvws}}users/signup",
+					"host": [
+						"{{snkrRvws}}users"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{heroku}}users/signUp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userName\": \"bdsdfgssdsfsdfd\",\n  \"password\": \"bfsdgdfdsdssfdf\",\n  \"email\": \"bdfdfdgdf@dfdfsdfdgd\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{heroku}}users/signup",
+					"host": [
+						"{{heroku}}users"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login local",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userName\": \"aaaaa\",\n  \"password\": \"aaaaa\"\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{heroku}}users/login",
+					"host": [
+						"{{heroku}}users"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "users login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userName\": \"aaaaa\",\n  \"password\": \"aaaaa\"\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{snkrRvws}}users/login",
+					"host": [
+						"{{snkrRvws}}users"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add review",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "picture",
+							"type": "file",
+							"src": "/Users/adrian/Desktop/Captura de pantalla 2022-09-01 a las 16.45.55.png"
+						},
+						{
+							"key": "review",
+							"value": "{ \"brand\": \"nike\", \"model\": \"jordan\", \"review\":\"holahooalm\", \"owner\": \"630e5e99bd6d5f91b999517b\"}\n",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{snkrRvws}}reviews/addreview",
+					"host": [
+						"{{snkrRvws}}reviews"
+					],
+					"path": [
+						"addreview"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "snkrRvws",
+			"value": "http://localhost:4000/",
+			"type": "string"
+		},
+		{
+			"key": "heroku",
+			"value": "https://aarmesto-final-project-202207.herokuapp.com/",
+			"type": "string"
+		}
+	]
 }
