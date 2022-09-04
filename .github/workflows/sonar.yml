@@ -19,6 +19,7 @@ jobs:
         run: npm run test-coverage
         env:
           SECRET: ${{secrets.SECRET}}
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
