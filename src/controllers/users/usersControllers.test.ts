@@ -1,16 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import { User } from "../database/models/users";
-import { Payload } from "../types/payload";
-import { createToken } from "../utils/auth";
-import createCustomError from "../utils/error";
+import { User } from "../../database/models/users";
+import { Payload } from "../../types/payload";
+import { createToken } from "../../utils/auth";
+import createCustomError from "../../utils/error";
 import { logIn, signUp } from "./usersControllers";
 
 const next = jest.fn() as Partial<NextFunction>;
 
 let hashCompareValue: boolean = true;
 
-jest.mock("../utils/auth", () => ({
-  ...jest.requireActual("../utils/auth"),
+jest.mock("../../utils/auth", () => ({
+  ...jest.requireActual("../../utils/auth"),
   hashCompare: () => hashCompareValue,
   createToken: jest.fn().mockReturnValue(""),
 }));

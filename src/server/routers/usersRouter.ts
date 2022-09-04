@@ -1,6 +1,6 @@
 import express from "express";
 import { validate } from "express-validation";
-import { logIn, signUp } from "../../controllers/usersControllers";
+import { logIn, signUp } from "../../controllers/users/usersControllers";
 import logInSchema from "../../schemas/logInSchema";
 import signUpSchema from "../../schemas/signUpSchema";
 

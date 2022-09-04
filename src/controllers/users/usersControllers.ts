@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { User } from "../database/models/users";
-import { ReqUser, UserWithId } from "../types/user";
-import { createToken, hashCompare, hashCreator } from "../utils/auth";
-import createCustomError from "../utils/error";
-import { Payload } from "../types/payload";
+import { User } from "../../database/models/users";
+import { Payload } from "../../types/payload";
+import { ReqUser, UserWithId } from "../../types/user";
+import { createToken, hashCompare, hashCreator } from "../../utils/auth";
+import createCustomError from "../../utils/error";
 
 export const signUp = async (
   req: Request,
@@ -40,9 +40,6 @@ export const logIn = async (
   next: NextFunction
 ) => {
   const user = req.body as { userName: string; password: string };
-
-  user.userName.toString();
-  user.password.toString();
 
   const errorCustom = createCustomError(
     400,
