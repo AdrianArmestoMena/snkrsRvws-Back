@@ -11,7 +11,9 @@ const createReview = async (
   const json = req.body.review;
   try {
     const review: IReview = JSON.parse(json);
-    review.picture = `uploads\\${req.file.filename}`;
+    if (req.file) {
+      review.picture = `uploads\\${req.file.filename}`;
+    }
     const newReview = await Review.create(review);
     const statusCode = 201;
 
