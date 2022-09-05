@@ -25,6 +25,7 @@ const authentication = (
   }
 
   req.payload = tokenData;
+
   next();
 };
 export default authentication;
