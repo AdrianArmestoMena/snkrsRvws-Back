@@ -16,3 +16,7 @@ export interface UserWithId {
   contacts?: string[];
   reviews?: string[];
 }
+
+export interface Token {
+  user: { token: string };
+}
