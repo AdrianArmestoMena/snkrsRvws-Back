@@ -8,12 +8,8 @@ export const createReview = async (
   res: Response,
   next: NextFunction
 ) => {
-  const json = req.body.review;
+  const review: IReview = req.body;
   try {
-    const review: IReview = JSON.parse(json);
-    if (req.file) {
-      review.picture = `uploads/${req.file.filename}`;
-    }
     const newReview = await Review.create(review);
     const statusCode = 201;
 
