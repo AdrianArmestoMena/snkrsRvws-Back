@@ -3,7 +3,7 @@ import { Review } from "../../database/models/reviews";
 import { IReview } from "../../types/review";
 import createCustomError from "../../utils/error";
 
-const createReview = async (
+export const createReview = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -12,7 +12,7 @@ const createReview = async (
   try {
     const review: IReview = JSON.parse(json);
     if (req.file) {
-      review.picture = `uploads\\${req.file.filename}`;
+      review.picture = `uploads/${req.file.filename}`;
     }
     const newReview = await Review.create(review);
     const statusCode = 201;
@@ -29,4 +29,22 @@ const createReview = async (
   }
 };
 
-export default createReview;
+export const getOwnerReviews = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { owner } = req.params;
+  try {
+    const Reviews = await Review.find({ owner });
+
+    res.status(200).json({ reviews: Reviews });
+  } catch (error) {
+    const newError = createCustomError(
+      404,
+      "No reviews found",
+      "Could not get reviews"
+    );
+    next(newError);
+  }
+};
