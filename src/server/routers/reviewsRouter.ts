@@ -21,5 +21,5 @@ reviewsRouter.post(
   validate(reviewSchema, {}, { abortEarly: false }),
   createReview
 );
-reviewsRouter.get("/:owner", getOwnerReviews);
+reviewsRouter.get("/:owner", authentication, getOwnerReviews);
 export default reviewsRouter;

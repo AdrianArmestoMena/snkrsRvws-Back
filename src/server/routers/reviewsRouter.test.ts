@@ -10,7 +10,6 @@ let mongoServer: MongoMemoryServer;
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const mongoUrl = mongoServer.getUri();
-
   await connectDB(mongoUrl);
 });
 
@@ -50,7 +49,7 @@ describe("Given a /reviews/addeview route", () => {
         .expect(expectedStatus);
     });
 
-    test("Then it should respond with a status of 400 if some vakue is missing", async () => {
+    test("Then it should respond with a status of 400 if some value is missing", async () => {
       const reviewMock = {
         brand: "nike",
         model: "jordan",
@@ -67,6 +66,41 @@ describe("Given a /reviews/addeview route", () => {
           filename: "jordna.jpg",
         })
         .expect(expectedStatus);
+    });
+  });
+});
+
+describe("Given a /reviews/:owner route", () => {
+  describe("When it is requested with a POST method and review data", () => {
+    test("Then it should respond with a status of 201", async () => {
+      const userMock = {
+        userName: "Adrianam",
+        password: "Adrianama",
+        email: "arm@armesto",
+      };
+      const mockUser = await User.create(userMock);
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IjEyMzQ1NjciLCJpZCI6IjYzMTBkMTQyNjEyYjFmMGExY2VjODk2MSIsImlhdCI6MTY2MjM4NzIwOH0.5FBUtcB9yv6R2W-lFk9H14dmAOOecruuDAX6LVwPwiQ";
+
+      const expectedStatus = 200;
+
+      await request(app)
+        .get(`/reviews/${mockUser.id}`)
+        .set("Authorization", `Bearer ${token}`)
+        .expect(expectedStatus);
+    });
+
+    test("Then it should respond with a status of 400 if the token is missing", async () => {
+      const userMock = {
+        userName: "Adrianam",
+        password: "Adrianama",
+        email: "arm@armesto",
+      };
+      const mockUser = await User.create(userMock);
+
+      const expectedStatus = 400;
+
+      await request(app).get(`/reviews/${mockUser.id}`).expect(expectedStatus);
     });
   });
 });
