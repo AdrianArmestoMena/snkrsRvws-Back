@@ -16,7 +16,7 @@ describe("Given a create review  controller", () => {
   const reviewJson = JSON.stringify(mockedReqBody);
   const req = {
     body: { review: reviewJson },
-    file: { filename: "jordan11" } as any,
+    file: { filename: "jordan11" },
   } as Partial<Request>;
 
   const res = {
