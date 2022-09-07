@@ -127,17 +127,16 @@ describe("Given a get owner review  controller", () => {
 });
 
 describe("Given a function deleteReview", () => {
+  const req = {
+    params: { idReview: "232434" },
+  } as Partial<Request>;
+
+  const res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn(),
+  } as Partial<Response>;
   describe("When called with a request, a response and a next function as parameters", () => {
-    test("It should call the response 'status' method with '200'", async () => {
-      const req = {
-        params: { idReview: "232434" },
-      } as Partial<Request>;
-
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      } as Partial<Response>;
-
+    test("It should call the response 'status' method with '201'", async () => {
       const review = { name: "review" };
       const status = 201;
 
@@ -148,46 +147,41 @@ describe("Given a function deleteReview", () => {
 
       expect(res.status).toBeCalledWith(status);
     });
-
-    test("It should call the response 'json' method with the found review", async () => {
-      const req = {
-        params: { idReview: "232434" },
-      } as Partial<Request>;
-
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      } as Partial<Response>;
-
-      const review = { name: "" };
+    test("Then it should call the reseponse json method with the response", async () => {
+      const review = { name: "review" };
 
       Review.findById = jest.fn().mockReturnValue(review);
-      Review.deleteOne = jest.fn();
 
       await deleteReview(req as Request, res as Response, next as NextFunction);
 
-      expect(res.json).toBeCalledWith({ selectedReview: review });
+      expect(res.json).toHaveBeenCalledWith({ selectedReview: review });
     });
 
-    test("If the review doesen't exist it should call the next function", async () => {
-      const req = {
-        params: { idReview: "232434" },
-      } as Partial<Request>;
+    test("Then it should call the reseponse json method with the response", async () => {
+      const error = createCustomError(
+        404,
+        "Something went wrong",
+        "Failed reuqest delet review"
+      );
+      Review.findById = jest.fn().mockRejectedValue(new Error());
 
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      } as Partial<Response>;
+      await deleteReview(req as Request, res as Response, next as NextFunction);
 
+      expect(next).toHaveBeenCalledWith(error);
+    });
+
+    test("Then it should call the reseponse json method with the response", async () => {
       const error = createCustomError(
         404,
         "No reviews found with the id",
-        "Failed request deleted reviews, no reviews found"
+        "Fail deleteing review, no reviews found"
       );
+
+      Review.findById = jest.fn().mockReturnValue(false);
 
       await deleteReview(req as Request, res as Response, next as NextFunction);
 
-      expect(next).toBeCalledWith(error);
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

@@ -54,17 +54,17 @@ export const deleteReview = async (
   next: NextFunction
 ) => {
   const { idReview } = req.params;
-  const selectedReview = await Review.findById({ _id: idReview });
 
   try {
+    const selectedReview = await Review.findById({ _id: idReview });
+
     if (!selectedReview) {
-      next(
-        createCustomError(
-          404,
-          "No reviews found with the id",
-          "Fail deleteing review, no reviews found"
-        )
+      const error = createCustomError(
+        404,
+        "No reviews found with the id",
+        "Fail deleteing review, no reviews found"
       );
+      next(error);
       return;
     }
 
