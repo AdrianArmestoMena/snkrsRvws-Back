@@ -3,7 +3,7 @@ import { CustomRequest } from "../types/interfaces";
 import createCustomError from "../utils/error";
 import authentication from "./auth";
 
-let mockTokenVerify: jest.Mock<any, any> | string = jest.fn();
+let mockTokenVerify: jest.Mock<void> | string = jest.fn();
 
 jest.mock("../utils/auth", () => ({
   ...jest.requireActual("../utils/auth"),
