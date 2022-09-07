@@ -4,6 +4,7 @@ import { validate } from "express-validation";
 import multer from "multer";
 import {
   createReview,
+  deleteReview,
   getOwnerReviews,
 } from "../../controllers/reviews/reviewsController";
 import authentication from "../../middlewares/auth";
@@ -22,4 +23,5 @@ reviewsRouter.post(
   createReview
 );
 reviewsRouter.get("/:owner", authentication, getOwnerReviews);
+reviewsRouter.delete("/:idReview", authentication, deleteReview);
 export default reviewsRouter;

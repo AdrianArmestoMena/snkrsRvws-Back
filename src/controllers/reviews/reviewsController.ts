@@ -1,7 +1,10 @@
 import { NextFunction, Request, Response } from "express";
+import Debug from "debug";
 import { Review } from "../../database/models/reviews";
 import { IReview } from "../../types/review";
 import createCustomError from "../../utils/error";
+
+const debug = Debug("sneakers-reviews:controller-review");
 
 export const createReview = async (
   req: Request,
@@ -42,5 +45,39 @@ export const getOwnerReviews = async (
       "Could not get reviews"
     );
     next(newError);
+  }
+};
+
+export const deleteReview = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { idReview } = req.params;
+
+  try {
+    const selectedReview = await Review.findById({ _id: idReview });
+
+    if (!selectedReview) {
+      const error = createCustomError(
+        404,
+        "No reviews found with the id",
+        "Fail deleteing review, no reviews found"
+      );
+      next(error);
+      return;
+    }
+
+    await Review.deleteOne({ _id: idReview });
+    debug(`Deleted review with ID ${idReview}`);
+
+    res.status(201).json({ selectedReview });
+  } catch {
+    const error = createCustomError(
+      404,
+      "Something went wrong",
+      "Failed reuqest delet review"
+    );
+    next(error);
   }
 };
