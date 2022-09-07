@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { Review } from "../../database/models/reviews";
 import createCustomError from "../../utils/error";
-import { createReview, getOwnerReviews } from "./reviewsController";
+import {
+  createReview,
+  deleteReview,
+  getOwnerReviews,
+} from "./reviewsController";
 
 const next = jest.fn() as Partial<NextFunction>;
 
@@ -118,6 +122,72 @@ describe("Given a get owner review  controller", () => {
       );
 
       expect(next).toHaveBeenCalledWith(newError);
+    });
+  });
+});
+
+describe("Given a function deleteReview", () => {
+  describe("When called with a request, a response and a next function as parameters", () => {
+    test("It should call the response 'status' method with '200'", async () => {
+      const req = {
+        params: { idReview: "232434" },
+      } as Partial<Request>;
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      } as Partial<Response>;
+
+      const review = { name: "review" };
+      const status = 201;
+
+      Review.findById = jest.fn().mockReturnValue(review);
+      Review.deleteOne = jest.fn();
+
+      await deleteReview(req as Request, res as Response, next as NextFunction);
+
+      expect(res.status).toBeCalledWith(status);
+    });
+
+    test("It should call the response 'json' method with the found review", async () => {
+      const req = {
+        params: { idReview: "232434" },
+      } as Partial<Request>;
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      } as Partial<Response>;
+
+      const review = { name: "" };
+
+      Review.findById = jest.fn().mockReturnValue(review);
+      Review.deleteOne = jest.fn();
+
+      await deleteReview(req as Request, res as Response, next as NextFunction);
+
+      expect(res.json).toBeCalledWith({ selectedReview: review });
+    });
+
+    test("If the review doesen't exist it should call the next function", async () => {
+      const req = {
+        params: { idReview: "232434" },
+      } as Partial<Request>;
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      } as Partial<Response>;
+
+      const error = createCustomError(
+        404,
+        "No reviews found with the id",
+        "Failed request deleted reviews, no reviews found"
+      );
+
+      await deleteReview(req as Request, res as Response, next as NextFunction);
+
+      expect(next).toBeCalledWith(error);
     });
   });
 });
