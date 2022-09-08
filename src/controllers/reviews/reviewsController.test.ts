@@ -215,14 +215,13 @@ describe("Given a get one review  controller", () => {
     });
 
     test("It should call the next function with the created error if it wasn't posible to create the user", async () => {
-      Review.find = jest.fn().mockRejectedValue(new Error());
+      Review.findById = jest.fn().mockRejectedValue(new Error());
 
       const newError = createCustomError(
         404,
         "No reviews found",
         "Could not get reviews"
       );
-
       await getOneReview(req as Request, res as Response, next as NextFunction);
 
       expect(next).toHaveBeenCalledWith(newError);
