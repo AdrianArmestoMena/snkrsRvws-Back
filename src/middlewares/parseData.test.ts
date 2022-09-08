@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { IReview } from "../types/review";
+import createCustomError from "../utils/error";
 import parseData from "./parseData";
 
 describe("Given a parseData moddleware", () => {
@@ -30,6 +31,26 @@ describe("Given a parseData moddleware", () => {
       });
 
       expect(next).toHaveBeenCalled();
+    });
+
+    test("Then it should asign the data as req body", async () => {
+      const reqWithoutImage = {
+        body: { review: reviewJson },
+      } as Partial<Request>;
+
+      const customError = createCustomError(
+        404,
+        "You must add",
+        "Missing data"
+      );
+      await parseData(reqWithoutImage as Request, res as Response, next);
+
+      expect(req.body).toStrictEqual({
+        ...mockedReqBody,
+        picture: req.file.filename,
+      });
+
+      expect(next).toHaveBeenCalledWith(customError);
     });
   });
 });

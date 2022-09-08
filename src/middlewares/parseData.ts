@@ -1,15 +1,21 @@
 import { NextFunction, Request, Response } from "express";
+import createCustomError from "../utils/error";
 
 const parseData = async (req: Request, res: Response, next: NextFunction) => {
-  const newReview = req.body.review;
+  try {
+    const newReview = req.body.review;
 
-  const reviewObject = await JSON.parse(newReview);
+    const reviewObject = await JSON.parse(newReview);
 
-  reviewObject.picture = req.file.filename;
+    reviewObject.picture = req.file.filename;
 
-  req.body = reviewObject;
+    req.body = reviewObject;
 
-  next();
+    next();
+  } catch (error) {
+    const customError = createCustomError(404, "Missing data", "Missing data");
+    next(customError);
+  }
 };
 
 export default parseData;
