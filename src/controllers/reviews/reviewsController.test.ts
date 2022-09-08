@@ -211,7 +211,7 @@ describe("Given a get one review  controller", () => {
 
       await getOneReview(req as Request, res as Response, next as NextFunction);
 
-      expect(res.json).toHaveBeenCalledWith({ reviews: mockreviews });
+      expect(res.json).toHaveBeenCalledWith({ reviews: [mockreviews] });
     });
 
     test("It should call the next function with the created error if it wasn't posible to create the user", async () => {
