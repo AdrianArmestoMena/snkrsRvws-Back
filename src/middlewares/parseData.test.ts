@@ -1,7 +1,12 @@
 import { NextFunction, Request, Response } from "express";
+import fs from "fs/promises";
+
+import path from "path";
 import { IReview } from "../types/review";
 import createCustomError from "../utils/error";
 import parseData from "./parseData";
+
+jest.useFakeTimers();
 
 describe("Given a parseData moddleware", () => {
   describe("When called with a request, a response and a next function as arguments", () => {
@@ -13,9 +18,16 @@ describe("Given a parseData moddleware", () => {
     };
 
     const reviewJson = JSON.stringify(mockedReqBody);
+
+    jest
+      .spyOn(path, "join")
+      .mockReturnValue(`${path.join("uploads", "images")}`);
+
+    jest.spyOn(fs, "rename").mockResolvedValue();
+
     const req = {
       body: { review: reviewJson },
-      file: { filename: "jordan11" },
+      file: { filename: "jordan11", originalname: "jordan11" },
     } as Partial<Request>;
 
     const res = {} as Partial<Response>;
@@ -27,7 +39,7 @@ describe("Given a parseData moddleware", () => {
 
       expect(req.body).toStrictEqual({
         ...mockedReqBody,
-        picture: req.file.filename,
+        picture: `${Date.now()}${req.file.filename}`,
       });
 
       expect(next).toHaveBeenCalled();
@@ -44,11 +56,6 @@ describe("Given a parseData moddleware", () => {
         "Missing data"
       );
       await parseData(reqWithoutImage as Request, res as Response, next);
-
-      expect(req.body).toStrictEqual({
-        ...mockedReqBody,
-        picture: req.file.filename,
-      });
 
       expect(next).toHaveBeenCalledWith(customError);
     });

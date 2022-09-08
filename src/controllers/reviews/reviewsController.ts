@@ -57,7 +57,7 @@ export const getOneReview = async (
   try {
     const ReviewSelected = await Review.findById(id);
 
-    res.status(200).json({ reviews: ReviewSelected });
+    res.status(200).json({ reviews: [ReviewSelected] });
   } catch (error) {
     const newError = createCustomError(
       404,
