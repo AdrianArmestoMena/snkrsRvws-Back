@@ -5,6 +5,7 @@ import multer from "multer";
 import {
   createReview,
   deleteReview,
+  getOneReview,
   getOwnerReviews,
 } from "../../controllers/reviews/reviewsController";
 import authentication from "../../middlewares/auth";
@@ -23,5 +24,6 @@ reviewsRouter.post(
   createReview
 );
 reviewsRouter.get("/:owner", authentication, getOwnerReviews);
+reviewsRouter.get("/onereview/:id", authentication, getOneReview);
 reviewsRouter.delete("/:idReview", authentication, deleteReview);
 export default reviewsRouter;

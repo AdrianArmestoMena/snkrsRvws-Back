@@ -48,6 +48,26 @@ export const getOwnerReviews = async (
   }
 };
 
+export const getOneReview = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  try {
+    const ReviewSelected = await Review.findById(id);
+
+    res.status(200).json({ reviews: ReviewSelected });
+  } catch (error) {
+    const newError = createCustomError(
+      404,
+      "No reviews found",
+      "Could not get reviews"
+    );
+    next(newError);
+  }
+};
+
 export const deleteReview = async (
   req: Request,
   res: Response,
