@@ -6,4 +6,5 @@ export interface IReview {
   owner: string;
   likes?: string[];
   comments?: string[];
+  backupImage?: string;
 }
