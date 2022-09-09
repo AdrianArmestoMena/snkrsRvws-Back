@@ -7,6 +7,7 @@ const reviewSchema = {
     picture: Joi.string(),
     review: Joi.string().required(),
     owner: Joi.string(),
+    backupImage: Joi.string(),
   }),
 };
 

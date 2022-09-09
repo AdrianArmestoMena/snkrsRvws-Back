@@ -12,9 +12,6 @@ export const reviews = new Schema({
   picture: {
     type: String,
   },
-  backUpImage: {
-    type: String,
-  },
   review: {
     type: String,
     required: true,
@@ -27,6 +24,9 @@ export const reviews = new Schema({
   },
   comments: {
     type: [Schema.Types.ObjectId],
+  },
+  backupImage: {
+    type: String,
   },
 });
 
