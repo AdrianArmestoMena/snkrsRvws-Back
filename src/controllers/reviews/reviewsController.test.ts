@@ -6,6 +6,7 @@ import {
   deleteReview,
   getOneReview,
   getOwnerReviews,
+  updateReview,
 } from "./reviewsController";
 
 const next = jest.fn() as Partial<NextFunction>;
@@ -234,6 +235,62 @@ describe("Given a get one review  controller", () => {
       const statusCode = 200;
 
       expect(res.status).toHaveBeenCalledWith(statusCode);
+    });
+  });
+});
+
+describe("Given a update review  controller", () => {
+  const mockedReqBody = {
+    brand: "nike",
+    model: "jordan",
+    review: "holahooalm",
+    pictrue: "630e5e99bd6d5f91b999517b",
+  };
+
+  const req = {
+    params: { id: "" },
+    body: { review: mockedReqBody },
+    file: { filename: "jordan11" },
+  } as Partial<unknown>;
+
+  const res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn(),
+  } as Partial<Response>;
+
+  Review.findById = jest.fn().mockReturnValue(mockedReqBody);
+  Review.findByIdAndUpdate = jest.fn().mockReturnValue(mockedReqBody);
+
+  beforeEach(() => jest.clearAllMocks());
+  describe("When it is called with a Request a Response and a Next fucntion", () => {
+    test("Then it should call the status method of the response", async () => {
+      await updateReview(req as Request, res as Response, next as NextFunction);
+
+      const statusCode = 201;
+
+      expect(res.status).toHaveBeenCalledWith(statusCode);
+    });
+
+    test("Then it should call the json method of the response", async () => {
+      Review.findById = jest.fn().mockReturnValue(mockedReqBody);
+
+      await updateReview(req as Request, res as Response, next as NextFunction);
+
+      expect(res.json).toHaveBeenCalledWith({ newReview: mockedReqBody });
+    });
+
+    test("It should call the next function with the created error if it wasn't posible to create the user", async () => {
+      Review.findByIdAndUpdate = jest.fn().mockRejectedValue(new Error());
+
+      const errorCustom = createCustomError(
+        400,
+        "Fail updateing your reviews",
+        "Could not update review"
+      );
+
+      await updateReview(req as Request, res as Response, next as NextFunction);
+
+      expect(next).toHaveBeenCalledWith(errorCustom);
     });
   });
 });

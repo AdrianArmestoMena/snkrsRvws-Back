@@ -7,6 +7,7 @@ import {
   deleteReview,
   getOneReview,
   getOwnerReviews,
+  updateReview,
 } from "../../controllers/reviews/reviewsController";
 import authentication from "../../middlewares/auth";
 import parseData from "../../middlewares/parseData";
@@ -22,6 +23,14 @@ reviewsRouter.post(
   parseData,
   validate(reviewSchema, {}, { abortEarly: false }),
   createReview
+);
+reviewsRouter.put(
+  "/updatereview/:id",
+  authentication,
+  upload.single("image"),
+  parseData,
+  validate(reviewSchema, {}, { abortEarly: false }),
+  updateReview
 );
 reviewsRouter.get("/:owner", authentication, getOwnerReviews);
 reviewsRouter.get("/onereview/:id", authentication, getOneReview);

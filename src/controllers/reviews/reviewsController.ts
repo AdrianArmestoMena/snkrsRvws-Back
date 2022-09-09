@@ -28,6 +28,38 @@ export const createReview = async (
   }
 };
 
+export const updateReview = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  const { brand, review, model, picture }: IReview = req.body;
+  try {
+    const reviewToEdit = await Review.findById({ _id: id });
+
+    const reviewEdited = {
+      brand,
+      review,
+      model,
+      picture,
+      owner: reviewToEdit.owner,
+    };
+
+    await Review.findByIdAndUpdate(id, reviewEdited);
+    const newReview = await Review.findById(id);
+    const statusCode = 201;
+    res.status(statusCode).json({ newReview });
+  } catch (error) {
+    const errorCustom = createCustomError(
+      400,
+      "Fail updateing your reviews",
+      "Could not update review"
+    );
+    next(errorCustom);
+  }
+};
+
 export const getOwnerReviews = async (
   req: Request,
   res: Response,
