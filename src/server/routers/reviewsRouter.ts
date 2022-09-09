@@ -11,6 +11,7 @@ import {
 } from "../../controllers/reviews/reviewsController";
 import authentication from "../../middlewares/auth";
 import parseData from "../../middlewares/parseData";
+import supabaseUpload from "../../middlewares/supabase";
 import reviewSchema from "../../schemas/reviewSchema";
 
 const reviewsRouter = express.Router();
@@ -21,6 +22,7 @@ reviewsRouter.post(
   authentication,
   upload.single("image"),
   parseData,
+  supabaseUpload,
   validate(reviewSchema, {}, { abortEarly: false }),
   createReview
 );
@@ -29,6 +31,7 @@ reviewsRouter.put(
   authentication,
   upload.single("image"),
   parseData,
+  supabaseUpload,
   validate(reviewSchema, {}, { abortEarly: false }),
   updateReview
 );
