@@ -66,8 +66,13 @@ export const getOwnerReviews = async (
   next: NextFunction
 ) => {
   const { owner } = req.params;
+  const { page = 1, limit = 1 } = req.query;
+
   try {
-    const Reviews = await Review.find({ owner });
+    const Reviews = await Review.find({ owner })
+      .limit((limit as number) * 1)
+      .skip(((page as number) - 1) * (limit as number))
+      .exec();
 
     res.status(200).json({ reviews: Reviews });
   } catch (error) {
