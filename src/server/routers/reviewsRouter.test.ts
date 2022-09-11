@@ -195,3 +195,48 @@ describe("Given a /reviews/onereview/:idReview route", () => {
     });
   });
 });
+
+describe("Given a /reviews/bybrand/:brand route", () => {
+  describe("When it is requested with a get method and a brand as request param", () => {
+    test("Then it should respond with a status of 201", async () => {
+      const userReview = {
+        brand: "Nike",
+        model: "Jordan 11 low black and white",
+        picture: "02a4502cd2a7de527d98a8c3e7871891",
+        review: "dwjvniu jwdwg r3jgn3r g3r gj rtgkj4",
+        owner: "6310d142612b1f0a1cec8961",
+        id: "631624344805e6655b5b144a",
+      };
+
+      await Review.create(userReview);
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IjEyMzQ1NjciLCJpZCI6IjYzMTBkMTQyNjEyYjFmMGExY2VjODk2MSIsImlhdCI6MTY2MjM4NzIwOH0.5FBUtcB9yv6R2W-lFk9H14dmAOOecruuDAX6LVwPwiQ";
+
+      const expectedStatus = 200;
+
+      await request(app)
+        .get(`/reviews/bybrand/${userReview.brand}`)
+        .set("Authorization", `Bearer ${token}`)
+        .expect(expectedStatus);
+    });
+
+    test("Then it should respond with a status of 400 if the token is missing", async () => {
+      const userReview = {
+        brand: "Nike",
+        model: "Jordan 11 low black and white",
+        picture: "02a4502cd2a7de527d98a8c3e7871891",
+        review: "dwjvniu jwdwg r3jgn3r g3r gj rtgkj4",
+        owner: "6310d142612b1f0a1cec8961",
+        id: "631624344805e6655b5b144a",
+      };
+
+      await Review.create(userReview);
+
+      const expectedStatus = 400;
+
+      await request(app)
+        .get(`/reviews/${userReview.brand}`)
+        .expect(expectedStatus);
+    });
+  });
+});
