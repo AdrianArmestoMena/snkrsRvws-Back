@@ -5,6 +5,7 @@ import multer from "multer";
 import {
   createReview,
   deleteReview,
+  getbyBrand,
   getOneReview,
   getOwnerReviews,
   updateReview,
@@ -36,6 +37,7 @@ reviewsRouter.put(
   updateReview
 );
 reviewsRouter.get("/:owner", authentication, getOwnerReviews);
+reviewsRouter.get("/bybrand/:brand", authentication, getbyBrand);
 reviewsRouter.get("/onereview/:id", authentication, getOneReview);
 reviewsRouter.delete("/:idReview", authentication, deleteReview);
 export default reviewsRouter;
