@@ -10,7 +10,6 @@ import {
 } from "./reviewsController";
 
 const next = jest.fn() as Partial<NextFunction>;
-beforeEach(() => jest.clearAllMocks());
 
 describe("Given a create review  controller", () => {
   const mockedReqBody = {
@@ -64,7 +63,7 @@ describe("Given a create review  controller", () => {
   });
 });
 
-describe("Given a get owner review  controller", () => {
+describe("Given a get owner reviews  controller", () => {
   const mockreviews = [
     {
       brand: "Nike",
@@ -76,10 +75,9 @@ describe("Given a get owner review  controller", () => {
     },
   ];
 
-  Review.find = jest.fn().mockResolvedValue(mockreviews);
-
   const req = {
-    params: "" as unknown,
+    params: { owner: "6310d142612b1f0a1cec8961" } as unknown,
+    query: {} as unknown,
   };
   const res = {
     status: jest.fn().mockReturnThis(),
@@ -88,6 +86,14 @@ describe("Given a get owner review  controller", () => {
 
   describe("When it is called with a Request a Response and a Next fucntion", () => {
     test("Then it should call the status method of the response", async () => {
+      Review.find = await jest.fn().mockReturnValue({
+        limit: jest.fn().mockReturnValue({
+          skip: jest.fn().mockReturnValue({
+            exec: jest.fn().mockReturnValue(mockreviews),
+          }),
+        }),
+      });
+
       await getOwnerReviews(
         req as Request,
         res as Response,
@@ -100,6 +106,14 @@ describe("Given a get owner review  controller", () => {
     });
 
     test("Then it should call the json method of the response", async () => {
+      Review.find = await jest.fn().mockReturnValue({
+        limit: jest.fn().mockReturnValue({
+          skip: jest.fn().mockReturnValue({
+            exec: jest.fn().mockReturnValue(mockreviews),
+          }),
+        }),
+      });
+
       await getOwnerReviews(
         req as Request,
         res as Response,
@@ -110,8 +124,9 @@ describe("Given a get owner review  controller", () => {
     });
 
     test("It should call the next function with the created error if it wasn't posible to create the user", async () => {
-      Review.find = jest.fn().mockRejectedValue(new Error());
-
+      Review.find = await jest.fn().mockReturnValue({
+        limit: jest.fn().mockReturnValue(new Error()),
+      });
       const newError = createCustomError(
         404,
         "No reviews found",
