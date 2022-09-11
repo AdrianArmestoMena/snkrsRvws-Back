@@ -10,6 +10,7 @@ import {
 } from "./reviewsController";
 
 const next = jest.fn() as Partial<NextFunction>;
+beforeEach(() => jest.clearAllMocks());
 
 describe("Given a create review  controller", () => {
   const mockedReqBody = {
@@ -64,17 +65,9 @@ describe("Given a create review  controller", () => {
 });
 
 describe("Given a get owner review  controller", () => {
-  const req = {
-    params: "" as unknown,
-  };
-  const res = {
-    status: jest.fn().mockReturnThis(),
-    json: jest.fn(),
-  } as Partial<Response>;
-
   const mockreviews = [
     {
-      brand: "NIke",
+      brand: "Nike",
       model: "Jordan 11 low black and white",
       picture: "uploads/f96fc1f1c03538f4940955da94925f90",
       review: "weqklrn ejq rtjqenr qejrt qer iluqe",
@@ -84,6 +77,14 @@ describe("Given a get owner review  controller", () => {
   ];
 
   Review.find = jest.fn().mockResolvedValue(mockreviews);
+
+  const req = {
+    params: "" as unknown,
+  };
+  const res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn(),
+  } as Partial<Response>;
 
   describe("When it is called with a Request a Response and a Next fucntion", () => {
     test("Then it should call the status method of the response", async () => {

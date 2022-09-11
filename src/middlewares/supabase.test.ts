@@ -74,7 +74,7 @@ describe("Given a supabaseUpload function", () => {
       expect(next).toHaveBeenCalledWith(true);
     });
 
-    test("Then it should set the image url ass backup image at the body request", async () => {
+    test("Then it should set the image url as backup image at the body request", async () => {
       await supabaseUpload(
         req as Request,
         res as Response,
@@ -84,7 +84,7 @@ describe("Given a supabaseUpload function", () => {
       expect(req.body.backupImage).toBe(url);
     });
 
-    test("If teh upload reject as an error it should call next with the created error", async () => {
+    test("If the upload reject as an error it should call next with the created error", async () => {
       mockUpload = jest.fn().mockRejectedValue(new Error());
 
       const expectedError = createCustomError(
