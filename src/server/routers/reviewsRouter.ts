@@ -5,6 +5,7 @@ import {
   createReview,
   deleteReview,
   getbyBrand,
+  getbyBrandbyOwner,
   getOneReview,
   getOwnerReviews,
   getReviews,
@@ -39,6 +40,11 @@ reviewsRouter.put(
 reviewsRouter.get("/", getReviews);
 reviewsRouter.get("/:owner", authentication, getOwnerReviews);
 reviewsRouter.get("/bybrand/:brand", authentication, getbyBrand);
+reviewsRouter.get(
+  "/bybrandowner/:brand/:owner",
+  authentication,
+  getbyBrandbyOwner
+);
 reviewsRouter.get("/onereview/:id", authentication, getOneReview);
 reviewsRouter.delete("/:idReview", authentication, deleteReview);
 export default reviewsRouter;
