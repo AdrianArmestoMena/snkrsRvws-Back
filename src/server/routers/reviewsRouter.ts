@@ -7,6 +7,7 @@ import {
   getbyBrand,
   getOneReview,
   getOwnerReviews,
+  getReviews,
   updateReview,
 } from "../../controllers/reviews/reviewsController";
 import authentication from "../../middlewares/auth";
@@ -35,6 +36,7 @@ reviewsRouter.put(
   validate(reviewSchema, {}, { abortEarly: false }),
   updateReview
 );
+reviewsRouter.get("/", getReviews);
 reviewsRouter.get("/:owner", authentication, getOwnerReviews);
 reviewsRouter.get("/bybrand/:brand", authentication, getbyBrand);
 reviewsRouter.get("/onereview/:id", authentication, getOneReview);

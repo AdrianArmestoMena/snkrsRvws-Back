@@ -92,12 +92,12 @@ export const getReviews = async (
 ) => {
   const { page = 1, limit = 1 } = req.query;
   try {
-    const Reviews = await Review.find()
+    const reviewsFound = await Review.find()
       .limit((limit as number) * 1)
       .skip(((page as number) - 1) * (limit as number))
       .exec();
 
-    res.status(200).json({ reviews: Reviews });
+    res.status(200).json({ reviews: reviewsFound });
   } catch (error) {
     const newError = createCustomError(
       404,
