@@ -85,6 +85,29 @@ export const getOwnerReviews = async (
   }
 };
 
+export const getReviews = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { page = 1, limit = 1 } = req.query;
+  try {
+    const reviewsFound = await Review.find()
+      .limit((limit as number) * 1)
+      .skip(((page as number) - 1) * (limit as number))
+      .exec();
+
+    res.status(200).json({ reviews: reviewsFound });
+  } catch (error) {
+    const newError = createCustomError(
+      404,
+      "No reviews found",
+      "Could not get reviews"
+    );
+    next(newError);
+  }
+};
+
 export const getbyBrand = async (
   req: Request,
   res: Response,
