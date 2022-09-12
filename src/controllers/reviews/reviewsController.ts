@@ -128,6 +128,26 @@ export const getbyBrand = async (
   }
 };
 
+export const getbyBrandbyOwner = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { brand, owner } = req.params;
+  try {
+    const Reviews = await Review.find({ brand, owner });
+
+    res.status(200).json({ reviews: Reviews });
+  } catch (error) {
+    const newError = createCustomError(
+      404,
+      "No reviews found",
+      "Could not get reviews"
+    );
+    next(newError);
+  }
+};
+
 export const getOneReview = async (
   req: Request,
   res: Response,
