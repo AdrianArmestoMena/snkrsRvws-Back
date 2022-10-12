@@ -13,8 +13,8 @@ const corsOptions: IcorsOptions = {
     "http://localhost:5000",
     "http://localhost:5001",
     "http://localhost:5002",
-    "https://snkrsrvws-back-production.up.railway.app/reviews/",
-    "https://snkrsrvws-back-production.up.railway.app/reviews",
+    "https://snkrsrvws.netlify.app/",
+    "https://snkrsrvws.netlify.app",
   ],
 };
 
